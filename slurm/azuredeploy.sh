@@ -81,6 +81,10 @@ sudo -u slurm /usr/sbin/slurmctld >> /tmp/azuredeploy.log.$$ 2>&1 # Start the ma
 sudo munged --force >> /tmp/azuredeploy.log.$$ 2>&1 # Start munged
 sudo slurmd >> /tmp/azuredeploy.log.$$ 2>&1 # Start the node
 
+sudo echo "/home/$ADMIN_USERNAME/workspace *(rw,sync,no_subtree_check)" >> /etc/exports
+sudo systemctl restart nfs-kernel-server
+
+
 # Install slurm on all nodes by running apt-get
 # Also push munge key and slurm.conf to them
 echo "Prepare the local copy of munge key" >> /tmp/azuredeploy.log.$$ 2>&1 
@@ -115,6 +119,16 @@ do
       sudo cp -f /tmp/slurm.conf /etc/slurm-llnl/slurm.conf
       sudo chown slurm /etc/slurm-llnl/slurm.conf
       sudo slurmd
+      sudo apt install cmake g++ automake pkg-config openjdk-8-jdk python3 python3-pip python3-magic libboost-all-dev maven libbz2-dev liblzma-dev zlib1g-dev nfs-kernel-server nfs-common
+      sudo pip3 install --upgrade python-Levenshtein tensorflow keras iso-639 langid nltk regex h5py warc3-wet
+      cd
+      git clone --recurse-submodules https://github.com/bitextor/bitextor.git
+      cd bitextor
+      ./autogen.sh --prefix=/home/lpla/local && make && make install
+      cd
+      mkdir workspace
+      sudo mount $MASTER_IP:/HOME/$ADMIN_USERNAME/workspace workspace/
+      
 ENDSSH1
 
    i=`expr $i + 1`
