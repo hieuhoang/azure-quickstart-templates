@@ -1,6 +1,6 @@
 #!/bin/sh
 
-# This script can be found on https://github.com/Azure/azure-quickstart-templates/blob/master/slurm/azuredeploy.sh
+# This script can be found on https://github.com/bitextor/azure-quickstart-templates/blob/master/slurm/azuredeploy.sh
 # This script is part of azure deploy ARM template
 # This script assumes the Linux distribution to be Ubuntu (or at least have apt-get support)
 # This script will install SLURM on a Linux cluster deployed on a set of Azure VMs
@@ -38,7 +38,7 @@ echo $MASTER_IP $MASTER_NAME > /tmp/hosts.$$
 # Note all settings are for azureuser, NOT root
 sudo -u $ADMIN_USERNAME sh -c "mkdir /home/$ADMIN_USERNAME/.ssh/;echo Host worker\* > /home/$ADMIN_USERNAME/.ssh/config; echo StrictHostKeyChecking no >> /home/$ADMIN_USERNAME/.ssh/config; echo UserKnownHostsFile=/dev/null >> /home/$ADMIN_USERNAME/.ssh/config"
 
-# Generate a set of sshkey under /honme/azureuser/.ssh if there is not one yet
+# Generate a set of sshkey under /home/azureuser/.ssh if there is not one yet
 if ! [ -f /home/$ADMIN_USERNAME/.ssh/id_rsa ]; then
     sudo -u $ADMIN_USERNAME sh -c "ssh-keygen -f /home/$ADMIN_USERNAME/.ssh/id_rsa -t rsa -N ''"
 fi
