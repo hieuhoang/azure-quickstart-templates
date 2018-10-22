@@ -38,6 +38,13 @@ echo $MASTER_IP $MASTER_NAME > /tmp/hosts.$$
 # Note all settings are for azureuser, NOT root
 sudo -u $ADMIN_USERNAME sh -c "mkdir /home/$ADMIN_USERNAME/.ssh/;echo Host worker\* > /home/$ADMIN_USERNAME/.ssh/config; echo StrictHostKeyChecking no >> /home/$ADMIN_USERNAME/.ssh/config; echo UserKnownHostsFile=/dev/null >> /home/$ADMIN_USERNAME/.ssh/config"
 
+
+# Bitextor installation
+sudo apt install cmake g++ automake pkg-config openjdk-8-jdk python3 python3-pip python3-magic libboost-all-dev maven libbz2-dev liblzma-dev zlib1g-dev nfs-kernel-server nfs-common
+sudo pip3 install --upgrade python-Levenshtein tensorflow keras iso-639 langid nltk regex h5py warc3-wet
+sudo -u $ADMIN_USERNAME sh -c "git clone --recurse-submodules https://github.com/bitextor/bitextor.git ~/bitextor; cd ~/bitextor; ./autogen.sh --prefix=/home/lpla/local && make && make install
+
+
 # Generate a set of sshkey under /home/azureuser/.ssh if there is not one yet
 if ! [ -f /home/$ADMIN_USERNAME/.ssh/id_rsa ]; then
     sudo -u $ADMIN_USERNAME sh -c "ssh-keygen -f /home/$ADMIN_USERNAME/.ssh/id_rsa -t rsa -N ''"
@@ -121,13 +128,8 @@ do
       sudo slurmd
       sudo apt install cmake g++ automake pkg-config openjdk-8-jdk python3 python3-pip python3-magic libboost-all-dev maven libbz2-dev liblzma-dev zlib1g-dev nfs-kernel-server nfs-common
       sudo pip3 install --upgrade python-Levenshtein tensorflow keras iso-639 langid nltk regex h5py warc3-wet
-      cd
-      git clone --recurse-submodules https://github.com/bitextor/bitextor.git
-      cd bitextor
-      ./autogen.sh --prefix=/home/lpla/local && make && make install
-      cd
-      mkdir workspace
-      sudo mount $MASTER_IP:/HOME/$ADMIN_USERNAME/workspace workspace/
+      mkdir /home/$ADMIN_USERNAME/workspace
+      sudo mount $MASTER_IP:/home/$ADMIN_USERNAME/workspace workspace/
       
 ENDSSH1
 
