@@ -42,7 +42,7 @@ sudo -u $ADMIN_USERNAME sh -c "mkdir /home/$ADMIN_USERNAME/.ssh/;echo Host worke
 # Bitextor installation
 sudo apt install cmake g++ automake pkg-config openjdk-8-jdk python3 python3-pip python3-magic libboost-all-dev maven libbz2-dev liblzma-dev zlib1g-dev nfs-kernel-server nfs-common
 sudo pip3 install --upgrade python-Levenshtein tensorflow keras iso-639 langid nltk regex h5py warc3-wet
-sudo -u $ADMIN_USERNAME sh -c "git clone --recurse-submodules https://github.com/bitextor/bitextor.git ~/bitextor; cd ~/bitextor; ./autogen.sh --prefix=/home/lpla/local && make && make install
+sudo -u $ADMIN_USERNAME sh -c "git clone --recurse-submodules https://github.com/bitextor/bitextor.git ~/bitextor; cd ~/bitextor; ./autogen.sh --prefix=/home/lpla/local && make && make install"
 
 
 # Generate a set of sshkey under /home/azureuser/.ssh if there is not one yet
